@@ -21,40 +21,37 @@
 </head>
     <body>
         <div class="flex flex-col justify-center items-center gap-4 py-10">
-            <h1 class="text-xl font-semibold">Data Products</h1>
-            <a href="{{route('product.create')}}">Add Data</a>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr class="bg-gray-50">
-                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">No</th>
-                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Nama Product</th>
-                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Description</th>
-                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Stock</th>
-                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="hover:bg-gray-50">
-                        <?php
-                            $no = 0;
-                            foreach($products as $product) { $no++?>
-                                <td class="py-3 px-4 text-sm text-gray-700 border-b">{{$no}}</td>
-                                <td class="py-3 px-4 text-sm text-gray-700 border-b">{{$product->name}}</td>
-                                <td class="py-3 px-4 text-sm text-gray-700 border-b">{{$product->desc}}</td>
-                                <td class="py-3 px-4 text-sm text-gray-700 border-b">{{$product->stock}}</td>
-                                <td class="py-3 px-4 text-sm border-b">
-                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('product.destroy', $product->id) }}" method="POST">
-                                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-primary p-2 bg-blue-300">Edit</i></a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger p-2 bg-red-300">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                    </tbody>
-                </table>
+            <h1 class="text-xl font-semibold">Edit Data Products</h1>
+            <div class="max-w-6xl">
+                <form action="{{route('product.update', $product->id)}}" method="POST" enctype="multipart/form-data" class="flex flex-col justify-center gap-1.5">
+                    @csrf
+                    @method('PUT')
+                    <label for="name">Product Name: </label>
+                    <input type="hidden" value="{{ old('id', $product->id) }}">
+                    <input type="text" class="form-control border" name="name"
+                    value="{{ old('name', $product->name) }}" placeholder="Masukkan Nama Product">   
+                    @error('name')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                    @enderror 
+                    <label for="name">Product Description: </label>
+                    <textarea class="form-control border" name="desc">{{ old('desc', $product->desc) }}</textarea>
+                    @error('desc')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <label for="name">Product Stocks: </label>
+                    <input type="number" class="form-control border" name="stock"
+                    value="{{ old('stock', $product->stock) }}">   
+                    @error('stock')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                    @enderror 
+                    <button class="bg-blue-400 rounded-md text-white cursor-pointer" type="submit">Edit</button>    
+                </form>                                
             </div>
         </div>
     </body>
